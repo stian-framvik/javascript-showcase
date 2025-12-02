@@ -2,46 +2,33 @@
 
 let activeScript = 'none';
 
-// Prevents opening the context menu on right click.
-tablink.addEventListener("contextmenu", function (ev) {
-    ev.preventDefault();
-    setResponse("Right click!");
-    return false;
-});
+// tablink = document.querySelectorAll("sideButton");
 
-// Triggers on pressing down left mouse key.
-tablink.addEventListener("mousedown", () => {
-    setResponse("Press and hold!");
-});
+document.querySelectorAll('.sideButton').forEach(button => {
+    // Trigger on right mouse key.
+    button.addEventListener("contextmenu", function (ev) {
+        ev.preventDefault();
+        setResponse("Pressing right mouse key!");
+        return false;
+    })
+    // Trigger on pressing down left mouse key.
+    button.addEventListener('mousedown', () => {
+        setResponse("Pressing left mouse key!");
+    });
 
-// Triggers on releasing left mouse key.
-tablink.addEventListener("mouseup", () => {
-    setResponse("Left click!");
-});
+    // Trigger on pressing down right mouse key.
+    button.addEventListener('mouseup', () => {
+        setResponse("Releasing left mouse key!");
+    });
 
-// Displays the string input in the top banner
-function setResponse(responseString) {
-    response = document.getElementById("responseText");
-    response.innerHTML = `<span>${responseString}</span>`;
-    response.style.display = "block";
-};
-
-document.addEventListener('keyup', (event) => {
-    if (event.key.toLowerCase() === 'c') {
-        for (let i = 0; i < 1; i++) {
-            createRandomCircle();
-        }
-    } else if (event.key.toLowerCase() === 'd') {
-        deleteAllCircles();
-    }
 });
 
 // Add event listeners to all sidebar buttons.
-document.querySelectorAll('.sidebarButton').forEach(button => {
+document.querySelectorAll('.sideButton').forEach(button => {
     // When button is clicked...
     button.addEventListener('mouseenter', () => {
         // We first remove active class from all buttons...
-        document.querySelectorAll('.sidebarButton').forEach(btn => {
+        document.querySelectorAll('.sideButton').forEach(btn => {
             btn.classList.remove('active');
         });
 
@@ -55,6 +42,13 @@ document.querySelectorAll('.sidebarButton').forEach(button => {
         runActiveScript(button.dataset.script);
     });
 });
+
+// Displays the string input in the top banner
+function setResponse(responseString) {
+    response = document.getElementById("responseText");
+    response.innerHTML = `<span>${responseString}</span>`;
+    response.style.display = "block";
+};
 
 function updateDescription(scriptName) {
     const descriptions = {
