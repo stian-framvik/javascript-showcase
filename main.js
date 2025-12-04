@@ -1,27 +1,32 @@
-let activeScript = 'none';
+let activeScript = '';
 let activeScriptCleanup = null;
 
 // Cache DOM elements
 const responseContent = document.getElementById("response-content");
-const descriptionContent = document.getElementById("description-content");
-const scriptContent = document.getElementById("script-content");
+const scriptDescriptionContent = document.getElementById("description-content");
+const wrapperId = 'script-wrapper';
+const wrapperObj = document.getElementById(wrapperId);
+const containerId = 'script-container';
+const containerObj = document.getElementById(containerId);
 
-const contentStuff = document.querySelector('.content');
-const topStuff = document.querySelector('.banner');
-const sideStuff = document.querySelector('.sidebar');
-
-// Load a script dynamically
-function loadScript(scriptName) {
-    return import(`./scripts/${scriptName}.js`)
-        .then(module => {
-            if (module.init) module.init(); // Call the script's init function.
-            if (module.cleanup) activeScriptCleanup = module.cleanup;
-        })
-        .catch(error => {
-            console.error(`Failed to load ${scriptName}:`, error);
-            setResponse(`Error: Failed to load ${scriptName}.`);
-        });
+async function loadScript(scriptName = 'none') {
+    // Skip loading if scriptName is 'none' or empty.
+    if (scriptName === 'none' || !scriptName) {
+        console.log(`No script selected.`);
+        updateScriptDescription('none');
+        return;
+    }
+    // Import the chosen script.
+    try {
+        const module = await import(`./scripts/${scriptName}.js`);
+        if (module.init) module.init();
+        if (module.cleanup) activeScriptCleanup = module.cleanup;
+    } catch (error) {
+        console.error(`Failed to load ${scriptName}.js:`, error);
+        setResponse(`Oopsie! Failed to load ${scriptName}`);
+    }
 }
+
 
 // Sidebar event listeners
 document.querySelectorAll('.sideButton').forEach(button => {
@@ -34,7 +39,7 @@ document.querySelectorAll('.sideButton').forEach(button => {
         // Toggle active class.
         button.classList.toggle('active');
         activeScript = button.dataset.script;
-        updateDescription(button.dataset.script);
+        updateScriptDescription(button.dataset.script);
         runActiveScript(button.dataset.script);
     });
 
@@ -65,7 +70,7 @@ document.querySelectorAll('.sideButton').forEach(button => {
     });
 });
 
-function setResponse(responseString) {
+export function setResponse(responseString) {
     responseContent.textContent = responseString;
     responseContent.style.display = "block";
 }
@@ -77,45 +82,70 @@ async function runActiveScript(scriptName) {
         activeScriptCleanup();
         activeScriptCleanup = null;
     }
-
-
     // Clear the script content.
-    scriptContent.innerHTML = '';
+    containerObj.innerHTML = '';
+    console.log(`Loading ${scriptName}...`);
 
     // Load the new script.
-
     try {
         await loadScript(scriptName);
-        setResponse(`Script ${scriptName} loaded!`);
+        setResponse(`Script ${scriptName} loaded and running!`);
     } catch (error) {
-        console.error(error);
+        console.error(`Failed to load ${scriptName}`, error);
     }
 }
 
-function updateDescription(scriptName) {
-    const descriptions = {
-        'none': 'Select a script from the sidebar to see it in action!',
-        'circle': `Press 'c' to make a circle. Press 'd' to delete all circles.`,
-        'tictactoe': 'A simple tic-tac-toe game I made for practice.',
-        'bubbles': `Press 'b' to make a bubble at the cursor.`,
-    };
-    descriptionContent.textContent = descriptions[scriptName] || `No description available for ${scriptName}`;
+export function updateScriptDescription(scriptName = 'none', newScriptDescription = '') {
+    // First we remove any current script description content.
+    if (scriptDescriptionContent) {
+        scriptDescriptionContent.textContent = '';
+    }
+    // Next we update the description.
+    console.log(`Updated script description to ${scriptName}`);
+    scriptDescriptionContent.textContent = newScriptDescription || `No description available for ${scriptName}`;
 }
 
 // Just experimenting a bit with event listeners
 {
-    contentStuff.addEventListener('click', () => {
-        setResponse("You clicked the content!");
+    document.querySelector('#script-wrapper').addEventListener('click', (event) => {
+        if (!event.target.closest('#script-container')) {
+            setResponse("You clicked the script wrapper!");
+        }
     })
 
-    topStuff.addEventListener('click', () => {
+    document.querySelector('#script-container').addEventListener('click', (event) => {
+        if (event.target.closest('#script-container')) {
+            setResponse("You clicked the script container!");
+        }
+    })
+
+    document.querySelector('.banner').addEventListener('click', () => {
         setResponse("You clicked the top banner!");
     })
 
-    sideStuff.addEventListener('click', (event) => {
+    document.querySelector('.sidebar').addEventListener('click', (event) => {
         if (!event.target.closest('.sideButton')) {
             setResponse(`You clicked in the sidebar!`);
         }
     })
 }
 
+export function setGameBoard(wrapper = wrapperObj, container = containerObj) {
+    // Out with the old
+    wrapper.innerHTML = '';
+
+    // In with the new
+    container = document.createElement('div');
+    container.id = 'script-container';
+    Object.assign(container.style, {
+        // backgroundColor: '#540808',
+        backgroundColor: 'inherit',
+        margin: '20px auto',
+        padding: '40px',
+        display: 'grid',
+        gap: '5px',
+        height: '100%',
+        width: '100%'
+    })
+    wrapper.appendChild(container);
+}

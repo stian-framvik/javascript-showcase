@@ -8,11 +8,13 @@ body {
 .banner {
     background-color: #800020;
     color: #F9F6EE;
-    min-height: 180px;
-    width: 100% auto;
+    height: 180px;
+    width: stretch;
     padding: 10px 20px;
     text-align: center;
     font-size: 1.5rem;
+    position: relative;
+    z-index: 2;
 }
 
 .banner h1 {
@@ -35,17 +37,19 @@ body {
 
 .sidebar {
     margin: 0;
-    padding: 0;
+    padding: 20px 0;
     width: 200px;
     background-color: #800020;
     color: #F9F6EE;
-    position: fixed;
-    height: 100%;
+    position: static;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
     overflow: auto;
     overflow-x: hidden;
+    overflow-y: auto;
     z-index: 1;
-    left: 0;
-    padding-top: 20px;
 }
 
 .sidebar button {
@@ -78,7 +82,17 @@ div.content {
     /* Value should match sidebar's width */
     margin-left: 200px;
     padding: 1px 16px;
-    height: 800px;
+    /* min-height set at screen size minus banner height (180px) */
+    min-height: calc(100vh - 180px);
+    /* width fills the remaining... width */
+    width: calc(100% - 200px);
+}
+
+/* Container for the sidebar + content */
+#main-container {
+    display: flex;
+    /* min-height set at screen size minus banner height (180px) */
+    min-height: calc(100vh - 180px);
 }
 
 .tabcontent {
@@ -91,14 +105,51 @@ div.content {
     height: 300px;
 }
 
-#circle-container {
-    position: relative;
-    width: 100%;
+#description-content {
+    margin-bottom: 50px;
+    margin-top: 50px
+}
+
+#script-wrapper {
+    display: flex;
+    justify-content: left;
+    /* align-items: center; */
+    width: 60%;
     height: 100%;
+    padding: 20px 0;
+}
+
+#script-container {
+    /* background-color: #540808; */
+    background-color: inherit;
+    margin: 20px auto;
+    padding: 10px;
+    display: grid;
+    gap: 5px;
+    height: fit-content;
+    width: fit-content;
+}
+
+.cell {
+    background-color: #F9F6EE;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #3b0d0d;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell:hover {
+    background-color: #e0e0e0;
 }
 
 /*  COLOUR REFERENCES
     Bone white: #F9F6EE 
     Burgundy:   #800020       
     Maroon:     #550000
+    Marooner:   #3b0d0d
+    Maroonlite: #540808
 */
