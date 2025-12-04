@@ -24,7 +24,7 @@ body {
     font-size: 1.25rem;
 }
 
-#responseText {
+#response-content {
     display: none;
     margin: 10px;
     padding: 10px;
