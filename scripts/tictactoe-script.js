@@ -1,4 +1,4 @@
-// tictactoe.js
+// tictactoe-script.js
 import '../main.js';
 import { updateScriptDescription, setResponse, setGameBoard } from '../main.js';
 
@@ -14,7 +14,7 @@ const containerObject = document.getElementById(containerId);
 const wrapperObject = document.getElementById(wrapperId);
 
 export function init() {
-    console.log('Tictactoe script activated!');
+    console.log('Tictactoe script is now running!');
     // Update the script description.
     updateDescription();
     setGameBoard(wrapperObject);
@@ -95,7 +95,7 @@ function makeGameBoard(container = containerObject, size = gameBoardSize) {
 
             cell.addEventListener('click', () => {
                 if (cell.textContent === '') {
-                    cell.textContent = gamePlayerChar;
+                    cell.textContent = gamePlayerChar; // ᐁ
                 }
             });
             container.appendChild(cell);
