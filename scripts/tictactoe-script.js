@@ -1,112 +1,92 @@
 // tictactoe-script.js
 import '../main.js';
-import { updateScriptDescription, setResponse, setGameBoard } from '../main.js';
+import { updateScriptDescription, setResponse } from '../main.js';
+import { wrapperId, wrapperObj, containerId, containerObj } from '../main.js';
+import { setupEventListeners, removeEventListeners } from './event-handlers.js';
 
-var i;
-let keyupListener = null;
+
+// Initial game state
 let gameBoardSize = '3';
-let gamePlayerChar = 'X';
-let gameComputerChar = 'O';
+let currentPlayer = 'X';
 let description = '';
-const wrapperId = 'script-wrapper';
-const containerId = 'script-container';
-const containerObject = document.getElementById(containerId);
-const wrapperObject = document.getElementById(wrapperId);
+
+const tictactoeHandlers = {
+    // Key presses
+    keyboard: {
+        '0': () => makeGameBoard(),
+        'Escape': () => alert('Game paused!'),
+    },
+    // Mouse clicks
+    click: [
+        (event) => {
+            if (event.target.classList.contains('cell') && !event.target.textContent) {
+                event.target.textContent = currentPlayer;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // ?
+            }
+        }
+    ],
+    // Misc, e.g. cursor hovering
+    custom: [
+        {
+            event: 'mouseover',
+            selector: '.cell',
+            callback: (event) => {
+                event.target.style.backgroundColor = '#e0e0e0';
+            }
+        },
+        {
+            event: 'mouseout',
+            selector: '.cell',
+            callback: (event) => {
+                event.target.style.backgroundColor = 'white';
+
+            }
+        }
+    ],
+};
 
 export function init() {
-    console.log('Tictactoe script is now running!');
+    console.log('Initializing Tic-Tac-Toe script ...');
+    // First the Tic-Tac-Toe UI.
+    makeGameBoard();
+    // Then the event listeners.
+    setupEventListeners('tictactoe', tictactoeHandlers);
     // Update the script description.
     updateDescription();
-    setGameBoard(wrapperObject);
-
-    if (keyupListener) {
-        document.removeEventListener('keyup', keyupListener);
-    }
-
-    keyupListener = (event) => {
-        if (event.key.toLowerCase() === '3') {
-            gameBoardSize = 3;
-            setResponse('Game board size is 3-by-3!');
-        } else if (event.key.toLowerCase() === '4') {
-            gameBoardSize = 4;
-            setResponse('Game board size is 4-by-4!');
-        } else if (event.key.toLowerCase() === '5') {
-            gameBoardSize = 5;
-            setResponse('Game board size is 5-by-5!');
-        }
-
-        if (event.key.toLowerCase() === 'x') {
-            gamePlayerChar = 'X';
-            gameComputerChar = 'O';
-            setResponse('Player is X  -  Computer is O!');
-        } else if (event.key.toLowerCase() === 'o') {
-            gamePlayerChar = 'O';
-            gameComputerChar = 'X';
-            setResponse('Player is O  -  Computer is X!');
-        }
-
-        if (event.key.toLowerCase() === '0') {
-            setResponse('Clearing the game board for a new game!');
-            makeGameBoard();
-        }
-        updateDescription();
-    }
-    document.addEventListener('keyup', keyupListener)
 }
+
+
 
 export function cleanup() {
-    if (keyupListener) {
-        document.removeEventListener('keyup', keyupListener);
-        keyupListener = null;
-    }
+    removeEventListeners('tictactoe');
 }
 
-function makeGameBoard(container = containerObject, size = gameBoardSize) {
-    // Clear the container/game board.
-    setGameBoard(wrapperObject);
-    setResponse('Making new game board!');
-    container = document.getElementById('script-container');
+function makeGameBoard(container = containerObj, size = gameBoardSize) {
+    container.innerHTML = '';
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${size}, 100px)`;
+    container.style.gridTemplateRows = `repeat(${size}, 100px)`;
+    container.style.gap = '5px';
 
-    // Set the grid template for the container (CSS Grid).
-    Object.assign(container.style, {
-        backgroundColor: '#540808',
-        gridTemplateColumns: `repeat(${size}, 100px)`,
-        gridTemplateRows: `repeat(${size}, 100px)`,
-        height: 'fit-content',
-        width: 'fit-content'
-    });
-
-    // Make the squares for the board.
     for (let row = 0; row < size; row++) {
         for (let col = 0; col < size; col++) {
-            const cell = document.createElement('div');
-            cell.className = 'cell';
-            cell.id = `cell-${row}-${col}`;
-            cell.textContent = '';
-            Object.assign(cell.style, {
-                width: '100px',
-                height: '100px',
-                border: '1px solid black',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: '48px'
-            });
-
-            cell.addEventListener('click', () => {
-                if (cell.textContent === '') {
-                    cell.textContent = gamePlayerChar; // ᐁ
-                }
-            });
+            const cell = makeCell(row, col);
             container.appendChild(cell);
         }
     }
 }
 
+function makeCell(row, col) {
+    var c = document.createElement('div');
+    c.className = 'cell';
+    c.id = `cell-${row}-${col}`;
+    return c;
+};
+
+
+
 function updateDescription() {
-    description = `Tic-Tac-Toe.` +
-        `Press 3, 4 or 5 to set game board size, X or O to choose side. ` +
-        `Current settings: [${gameBoardSize}-by-${gameBoardSize}] and [playing as ${gamePlayerChar}]`;
+    description = `Tic-Tac-Toe.   You are 'X', press '0' to start the game.`;
     updateScriptDescription('tictactoe-script', description);
 }
 

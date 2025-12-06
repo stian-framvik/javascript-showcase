@@ -3,11 +3,11 @@ let activeScriptCleanup = null;
 
 // Cache DOM elements
 const responseContent = document.getElementById("response-content");
-const scriptDescriptionContent = document.getElementById("description-content");
-const wrapperId = 'script-wrapper';
-const wrapperObj = document.getElementById(wrapperId);
-const containerId = 'script-container';
-const containerObj = document.getElementById(containerId);
+const scriptDescriptionContent = document.getElementById("info-wrapper");
+export const wrapperId = 'script-wrapper';
+export const wrapperObj = document.getElementById(wrapperId);
+export const containerId = 'script-container';
+export const containerObj = document.getElementById(containerId);
 
 async function loadScript(scriptName = 'none') {
     // Skip loading if scriptName is 'none' or empty.
@@ -128,24 +128,4 @@ export function updateScriptDescription(scriptName = 'none', newScriptDescriptio
             setResponse(`You clicked in the sidebar!`);
         }
     })
-}
-
-export function setGameBoard(wrapper = wrapperObj, container = containerObj) {
-    // Out with the old
-    wrapper.innerHTML = '';
-
-    // In with the new
-    container = document.createElement('div');
-    container.id = 'script-container';
-    Object.assign(container.style, {
-        // backgroundColor: '#540808',
-        backgroundColor: 'inherit',
-        margin: '20px auto',
-        padding: '40px',
-        display: 'grid',
-        gap: '5px',
-        height: '100%',
-        width: '100%'
-    })
-    wrapper.appendChild(container);
 }

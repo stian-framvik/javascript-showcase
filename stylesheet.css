@@ -26,15 +26,6 @@ body {
     font-size: 1.25rem;
 }
 
-#response-content {
-    display: none;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: inherit;
-}
-
-
 .sidebar {
     margin: 0;
     padding: 20px 0;
@@ -62,7 +53,7 @@ body {
     border: none;
     outline: none;
     text-align: left;
-    margin-left: 20px;
+    margin-left: 5px;
     text-decoration: none;
     cursor: pointer;
     font-weight: 1000;
@@ -105,7 +96,7 @@ div.content {
     height: 300px;
 }
 
-#description-content {
+#info-wrapper {
     margin-bottom: 50px;
     margin-top: 50px
 }
@@ -113,21 +104,21 @@ div.content {
 #script-wrapper {
     display: flex;
     justify-content: left;
-    /* align-items: center; */
-    width: 60%;
     height: 100%;
     padding: 20px 0;
 }
 
 #script-container {
-    /* background-color: #540808; */
+    background-color: #540808;
     background-color: inherit;
-    margin: 20px auto;
+    width: 100%;
+    margin-right: 20%;
+    margin-left: auto;
     padding: 10px;
     display: grid;
     gap: 5px;
-    height: fit-content;
-    width: fit-content;
+    /* height: fit-content;
+    width: fit-content; */
 }
 
 .cell {
