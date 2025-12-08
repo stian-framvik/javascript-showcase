@@ -71,6 +71,7 @@ document.querySelectorAll('.sideButton').forEach(button => {
 });
 
 export function setResponse(responseString) {
+    console.log(responseString);
     responseContent.textContent = responseString;
     responseContent.style.display = "block";
 }
@@ -107,17 +108,17 @@ export function updateScriptDescription(scriptName = 'none', newScriptDescriptio
 
 // Just experimenting a bit with event listeners
 {
-    document.querySelector('#script-wrapper').addEventListener('click', (event) => {
-        if (!event.target.closest('#script-container')) {
-            setResponse("You clicked the script wrapper!");
-        }
-    })
+    // document.querySelector('#script-wrapper').addEventListener('click', (event) => {
+    //     if (!event.target.closest('#script-container')) {
+    //         setResponse("You clicked the script wrapper!");
+    //     }
+    // })
 
-    document.querySelector('#script-container').addEventListener('click', (event) => {
-        if (event.target.closest('#script-container')) {
-            setResponse("You clicked the script container!");
-        }
-    })
+    // document.querySelector('#script-container').addEventListener('click', (event) => {
+    //     if (event.target.closest('#script-container')) {
+    //         setResponse("You clicked the script container!");
+    //     }
+    // })
 
     document.querySelector('.banner').addEventListener('click', () => {
         setResponse("You clicked the top banner!");

@@ -137,6 +137,77 @@ div.content {
     background-color: #e0e0e0;
 }
 
+
+
+/* Map Maker Menu */
+#mapmaker-menu {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+#mapmaker-menu h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tool-button {
+    padding: 8px 12px;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tool-button:hover {
+    background-color: #550000;
+}
+
+#tool-save {
+    background-color: #4CAF50;
+}
+
+#tool-load {
+    background-color: #FF9800;
+    /* Orange to stand out */
+}
+
+#tile-context-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0 0 0 0.2);
+    padding: 8px;
+    z-index: 1000;
+    font-family: monospace;
+    font-size: 12px;
+    display: none;
+}
+
+#tile-context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#tile-context-menu li {
+    padding: 4px 8px;
+    cursor: default;
+}
+
+#tile-context-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+
 /*  COLOUR REFERENCES
     Bone white: #F9F6EE 
     Burgundy:   #800020       
